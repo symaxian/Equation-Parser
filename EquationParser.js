@@ -33,7 +33,7 @@ Exceptions:
 */
 
 EquationParser = (function() {
-	
+
 	'use strict';
 
 	var parser = {};
@@ -114,10 +114,8 @@ EquationParser = (function() {
 				if(charCode === 40 || charCode === 41) {
 					// If this is a leaf group(no inner groups), collapse it
 					if(prevGrpChar === 40 && charCode === 41) {
-						// Get the inner formula without the parens
-						group = s.substr(start, i - start);
 						// Replace the group in s with the result of parsing the group, without the parens
-						s = s.substr(0, start-1) + parser.parse(group) + s.substr(start+group.length+1);
+						s = s.substr(0, start-1) + parser.parse(s.substr(start, i-start)) + s.substr(i+1);
 					}
 					// Track the previous group symbol
 					prevGrpChar = charCode;
@@ -138,7 +136,7 @@ EquationParser = (function() {
 				if(leftCode !== 43 && leftCode !== 45 && leftCode !== 42 && leftCode !== 47) {
 					// Parse the number starting from the index of the previous operator up to the current one
 					// Add the operator to the array
-					ar.push(Number(s.substr(start, i - start)), charCode);
+					ar.push(Number(s.substr(start, i-start)), charCode);
 					// Track the index of the current operator
 					// This will be used for the next numeric parsing
 					start = i + 1;
@@ -155,11 +153,11 @@ EquationParser = (function() {
 		if(start > 0) {
 			ar.push(Number(s.substr(start)));
 		}
-		
+
 		// Apply MDAS rules to the equation
 		parser.applyRule(ar, 42, 47);
 		parser.applyRule(ar, 43, 45);
-		
+
 		// Return the final answer of the computation
 		if(ar.length) {
 			return ar[0];
