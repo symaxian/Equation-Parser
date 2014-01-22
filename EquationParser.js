@@ -77,8 +77,8 @@ EquationParser = (function() {
 				}
 				// Replace num1, op, and num2 in the array with the result
 				ar.splice(i-1, 3, ans);
-				// Restart at the beginning, -1 because -1+2 === 1
-				i = -1;
+				// Restart at the beginning(1), 0 because 0+1 === 1
+				i = 0;
 			}
 		}
 
